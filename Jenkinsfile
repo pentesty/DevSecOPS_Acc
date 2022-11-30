@@ -77,7 +77,7 @@ pipeline {
  //		sh 'echo "AWS misconfiguration"'
             // sh './securityhub.sh'
    //         }
-   //// }
+   // }
 	  
 	
    stage ('Incidents report') {
