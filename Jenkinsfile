@@ -70,7 +70,7 @@ pipeline {
    //     steps {
   //           sh 'echo "In-Progress"'
    //         }
-   // }
+   //// }
 
   // stage ('Security monitoring and misconfigurations') {
   //      steps {
