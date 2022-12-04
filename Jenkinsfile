@@ -76,7 +76,7 @@ pipeline {
   //      steps {
  //		sh 'echo "AWS misconfiguration"'
             // sh './securityhub.sh'
-   //         }
+   ////         }
    // }
 	  
 	
