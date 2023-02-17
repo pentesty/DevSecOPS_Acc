@@ -69,7 +69,7 @@ pipeline {
   
    // stage ('Host vulnerability assessment') {
    //     steps {
-  // //          sh 'echo "In-Progress"'
+  //           sh 'echo "In-Progress"'
    //         }
    // }
 
