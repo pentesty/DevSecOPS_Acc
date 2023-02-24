@@ -76,7 +76,7 @@ pipeline {
   // stage ('Security monitoring and misconfigurations') {
   //      steps {
  //		sh 'echo "AWS misconfiguration"'
-   //         // sh './securityhub.sh'
+   //          sh './securityhub.sh'
    //         }
    // }
 	  
