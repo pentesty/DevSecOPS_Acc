@@ -46,7 +46,8 @@ pipeline {
       stage ('SAST-SemGrep') {
 	      steps {
 		      
-		   sh 'sudo docker run --rm -v "${PWD}:/src" returntocorp/semgrep semgrep --config=auto --output semgrep_report.json --json'
+		   sh 'sudo docker run --rm -v "${PWD}:/src" returntocorp/semgrep semgrep --config=auto --output semgrep_output.json --json'
+		   sh './semgrep_report.sh'
 
 
 
