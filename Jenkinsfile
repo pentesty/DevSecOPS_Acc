@@ -16,6 +16,13 @@ pipeline {
             ''' 
       }
     }
+    {
+        stage('Clone Repo') {
+            steps {
+                // Get some code from a GitHub repository
+                git url: 'https://github.com/dineshshetty/Android-InsecureBankv2.git', branch: 'master'
+            }
+        }
     
     stage ('Check secrets') {
       steps {
@@ -37,15 +44,15 @@ pipeline {
             }
         }
     
-    stage ('Static analysis - SonarQube') {
-      steps {
-        withSonarQubeEnv('sonar') {
-          sh 'mvn sonar:sonar'
-	  //sh 'sudo python3 sonarqube.py'
-	  sh './sonarqube_report.sh'
-        }
-      }
-    }
+//     stage ('Static analysis - SonarQube') {
+//       steps {
+//         withSonarQubeEnv('sonar') {
+//           sh 'mvn sonar:sonar'
+// 	  //sh 'sudo python3 sonarqube.py'
+// 	  sh './sonarqube_report.sh'
+//         }
+//       }
+//     }
 	  
 //       stage ('SAST-SemGrep') {
 // 	      steps {
@@ -78,7 +85,45 @@ pipeline {
               }      
            }     
     }
-   
+    stage('Binary Analysis') {
+            steps {
+                script {
+                    dir(INPUT_LOCATION) {
+                        files = findFiles(glob: '*.apk')
+                    }
+                    echo 'Test Script files'
+                    files.each { f ->
+                        def TASK_COLLECTION = [:]
+                        TASK_COLLECTION["MOBSF"] =  {
+                            def AUTH_KEY = 'ce368c2a03dac6cb30e6afb7421dc7c345dcfb97368953238dbb709c5a8ec64a'
+                            upload_cmd = "curl -F 'file=@${env.INPUT_LOCATION}${f}' http://localhost:8000/api/v1/upload -H 'Authorization:${AUTH_KEY}'"
+                            upload_result = sh label: 'Upload Binary', returnStdout: true, script: upload_cmd
+
+                            def response_map = readJSON text: upload_result
+                            def app_type = response_map["scan_type"]
+                            sh "echo  $app_type"
+                            def app_hash = response_map["hash"]
+                            sh "echo  $app_hash"
+                            def app_name = response_map["file_name"]
+                            sh "echo  $app_name"
+
+                            scan_start_cmd = "curl -X POST --url http://localhost:8000/api/v1/scan --data 'scan_type=${app_type}&file_name=${app_name}&hash=${app_hash}' -H 'Authorization:${AUTH_KEY}'"
+                            sh label: 'Start Scan of Binary', returnStdout: true, script: scan_start_cmd
+
+                            def dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH:mm")
+                            def date = new Date()
+                            def time =dateFormat.format(date)
+
+
+                            scan_download_report="curl -# -o ${env.INPUT_LOCATION}/MobSF_Report_${time}.pdf -X POST --url http://localhost:8000/api/v1/download_pdf --data 'hash=${app_hash}' -H 'Authorization:${AUTH_KEY}'"
+                            report_text = sh label: 'Start Scan of Download Report', returnStdout: true, script: scan_download_report
+                            sh "echo $report_text"
+                        }
+                        parallel(TASK_COLLECTION)
+                    }
+                }
+            }
+        }
     stage ('Dynamic analysis') {
             steps {
            sshagent(['application_server']) {
