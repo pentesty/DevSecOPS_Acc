@@ -1,5 +1,9 @@
+import java.text.SimpleDateFormat
 pipeline {
   agent any 
+  parameters {
+    string defaultValue: '', description: '', name: 'INPUT_LOCATION', trim: true
+    }
   tools {
     maven 'Maven'
   }
@@ -15,7 +19,7 @@ pipeline {
     
     stage ('Check secrets') {
       steps {
-      sh 'trufflehog3 https://github.com/pentesty/DevSecOps_Acc.git -f json -o truffelhog_output.json || true'
+      sh 'trufflehog3 https://github.com/dineshshetty/Android-InsecureBankv2.git -f json -o truffelhog_output.json || true'
       sh './truffelhog_report.sh'
       }
     }
@@ -69,7 +73,7 @@ pipeline {
     stage ('Deploy to server') {
             steps {
            sshagent(['application_server']) {
-                sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/DemoProject/webgoat-server/target/webgoat-server-v8.2.0-SNAPSHOT.jar ubuntu@13.232.160.126:/WebGoat'
+                sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/DemoProject-Mob/webgoat-server/target/webgoat-server-v8.2.0-SNAPSHOT.jar ubuntu@13.232.160.126:/WebGoat'
 		sh 'ssh -o  StrictHostKeyChecking=no ubuntu@13.232.160.126 "nohup java -jar /WebGoat/webgoat-server-v8.2.0-SNAPSHOT.jar &"'
               }      
            }     
