@@ -43,7 +43,7 @@ pipeline {
 		    sh './dependency_check_report.sh'
             }
         }
-    
+   
 //     stage ('Static analysis - SonarQube') {
 //       steps {
 //         withSonarQubeEnv('sonar') {
