@@ -50,7 +50,6 @@ pipeline {
 // 		   sh './semgrep_report.sh'
 
 
-
 		      //sshagent(['semgrep-server']) {
 //	        sh '''
 //			ifconfig
