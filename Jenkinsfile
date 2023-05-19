@@ -8,15 +8,15 @@ pipeline {
     maven 'Maven'
   }
   stages {
-    stage ('Initialize') {
-      steps {
-        sh '''
-                echo "PATH"
-                echo "M2_HOME"
-            ''' 
-      }
-    }
-    {
+//     stage ('Initialize') {
+//       steps {
+//         sh '''
+//                 echo "PATH"
+//                 echo "M2_HOME"
+//             ''' 
+//       }
+//     }
+//    {
         stage('Clone Repo') {
             steps {
                 // Get some code from a GitHub repository
@@ -155,5 +155,4 @@ pipeline {
     }	  
 	  
    }  
-}
 }
