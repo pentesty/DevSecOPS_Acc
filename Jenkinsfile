@@ -115,7 +115,7 @@ pipeline {
                             def time =dateFormat.format(date)
 
 
-                            scan_download_report="curl -# -o ${env.INPUT_LOCATION}/MobSF_Report_${time}.pdf -X POST --url http://localhost:8000/api/v1/download_pdf --data 'hash=${app_hash}' -H 'Authorization:${AUTH_KEY}'"
+                            scan_download_report="curl -# -o ${env.INPUT_LOCATION}/MobSF_Report.json -X POST --url http://localhost:8000/api/v1/report_json --data 'hash=${app_hash}' -H 'Authorization:${AUTH_KEY}'"
                             report_text = sh label: 'Start Scan of Download Report', returnStdout: true, script: scan_download_report
                             sh "echo $report_text"
                         }
