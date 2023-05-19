@@ -20,7 +20,7 @@ pipeline {
         stage('Clone Repo') {
             steps {
                 // Get some code from a GitHub repository
-                git url: 'https://github.com/dineshshetty/Android-InsecureBankv2.git', branch: 'master'
+                git url: 'https://github.com/pentesty/DevSecOps_Acc.git/', branch: 'mob'
             }
         }
     
