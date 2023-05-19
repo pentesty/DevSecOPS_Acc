@@ -11,8 +11,8 @@ pipeline {
     stage ('Initialize') {
       steps {
         sh '''
-                echo "${PATH}"
-                echo "${M2_HOME}"
+                echo "PATH"
+                echo "M2_HOME"
             ''' 
       }
     }
