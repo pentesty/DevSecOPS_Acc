@@ -44,15 +44,15 @@ pipeline {
             }
         }
    
-//     stage ('Static analysis - SonarQube') {
-//       steps {
-//         withSonarQubeEnv('sonar') {
-//           sh 'mvn sonar:sonar'
-// 	  //sh 'sudo python3 sonarqube.py'
-// 	  sh './sonarqube_report.sh'
-//         }
-//       }
-//     }
+    stage ('Static analysis - SonarQube') {
+      steps {
+        withSonarQubeEnv('sonar') {
+          sh 'mvn sonar:sonar'
+	  //sh 'sudo python3 sonarqube.py'
+	  sh './sonarqube_report.sh'
+        }
+      }
+    }
 	  
 //       stage ('SAST-SemGrep') {
 // 	      steps {
@@ -80,8 +80,8 @@ pipeline {
     stage ('Deploy to server') {
             steps {
            sshagent(['application_server']) {
-                sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/DemoProject-Mob/webgoat-server/target/webgoat-server-v8.2.0-SNAPSHOT.jar ubuntu@13.232.160.126:/WebGoat'
-		sh 'ssh -o  StrictHostKeyChecking=no ubuntu@13.232.160.126 "nohup java -jar /WebGoat/webgoat-server-v8.2.0-SNAPSHOT.jar &"'
+                sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/DemoProject-Mob/webgoat-server/target/webgoat-server-v8.2.0-SNAPSHOT.jar ubuntu@43.205.194.48:/WebGoat'
+		sh 'ssh -o  StrictHostKeyChecking=no ubuntu@43.205.194.48 "nohup java -jar /WebGoat/webgoat-server-v8.2.0-SNAPSHOT.jar &"'
               }      
            }     
     }
@@ -127,8 +127,8 @@ pipeline {
     stage ('Dynamic analysis') {
             steps {
            sshagent(['application_server']) {
-                sh 'ssh -o  StrictHostKeyChecking=no ubuntu@43.205.209.197 "sudo docker run --rm -v /home/ubuntu:/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t http://13.232.160.126/WebGoat -x zap_report || true" '
-		sh 'ssh -o  StrictHostKeyChecking=no ubuntu@43.205.209.197 "sudo ./zap_report.sh"'
+                sh 'ssh -o  StrictHostKeyChecking=no ubuntu@65.0.76.237 "sudo docker run --rm -v /home/ubuntu:/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t http://43.205.194.48/WebGoat -x zap_report || true" '
+		sh 'ssh -o  StrictHostKeyChecking=no ubuntu@65.0.76.237 "sudo ./zap_report.sh"'
               }      
            }       
     }
