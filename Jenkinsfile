@@ -121,6 +121,7 @@ pipeline {
                         }
                         parallel(TASK_COLLECTION)
                     }
+		    sh './mobsf_report.sh'
                 }
             }
         }
