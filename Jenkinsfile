@@ -20,13 +20,13 @@ pipeline {
 //         stage('Clone Repo') {
 //             steps {
 //                 // Get some code from a GitHub repository
-//                 git url: 'https://github.com/pentesty/DevSecOps_Acc.git/', branch: 'mob'
+//                 git url: 'https://github.com/pentesty/DevSecOps_Acc.git', branch: 'mob'
 //             }
 //         }
     
     stage ('Check secrets') {
       steps {
-      sh 'trufflehog3 https://github.com/dineshshetty/Android-InsecureBankv2.git -f json -o truffelhog_output.json || true'
+      sh 'trufflehog3 --branch mob https://github.com/pentesty/DevSecOps_Acc.git -f json -o truffelhog_output.json || true'
       sh './truffelhog_report.sh'
       }
     }
