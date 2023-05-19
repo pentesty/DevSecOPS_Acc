@@ -16,7 +16,7 @@ pipeline {
 //             ''' 
 //       }
 //     }
-    {
+//     {
         stage('Clone Repo') {
             steps {
                 // Get some code from a GitHub repository
