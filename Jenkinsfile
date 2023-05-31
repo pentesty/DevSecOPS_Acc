@@ -80,7 +80,7 @@ pipeline {
             steps {
            sshagent(['application_server']) {
                 //sh 'ssh -o  StrictHostKeyChecking=no ubuntu@13.233.123.52 "sudo docker run --rm -v /home/ubuntu:/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t http://43.204.29.113/WebGoat -x zap_report || true" '
-		sh 'ssh -o  StrictHostKeyChecking=no ubuntu@13.233.123.52 "sudo docker run --rm -v /home/ubuntu:/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t http://43.204.29.113:8080/WebGoat -x zap_report -n defaultcontext.context || true" '
+		sh 'ssh -o  StrictHostKeyChecking=no ubuntu@13.233.123.52 "sudo docker run --rm -v /home/ubuntu:/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t http://43.204.29.113:8081/WebGoat -x zap_report -n defaultcontext.context || true" '
 		sh 'ssh -o  StrictHostKeyChecking=no ubuntu@13.233.123.52 "sudo ./zap_report.sh"'
               }      
            }       
