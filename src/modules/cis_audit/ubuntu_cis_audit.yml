@@ -1,0 +1,61 @@
+---
+
+  - name: Install prerequisites for CIS audit tool
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - git
+      - curl
+      - python3-pip
+
+  - name: Set cis audit output filepath
+    set_fact: cis_audit_file=CIS_{{ ansible_default_ipv4.address }}_{{ os }}{{ os_major_version }}_cis_audit.json
+
+  - name: Git clone CIS-audit repo | Ubuntu_18
+    git:
+      repo: "{{ ubuntu18_git_repo }}"
+      dest: "{{ audit_dir_path }}"
+      version: main
+      force: true
+    when: os|lower == 'ubuntu' and os_major_version == '18'
+
+  - name: Git clone CIS-audit repo | Ubuntu_20
+    git:
+      repo: "{{ ubuntu20_git_repo }}"
+      dest: "{{ audit_dir_path }}"
+      version: devel
+      force: true
+    when: os|lower =='ubuntu' and os_major_version == '20'
+
+  - name: Download goss using curl
+    shell:
+      cmd: curl -fsSL https://goss.rocks/install | GOSS_VER={{ goss_ver }} GOSS_DST={{ audit_dir_path }} sh
+    args:
+      executable: /bin/bash
+
+  - name: Update Audit content location
+    lineinfile:
+      path: "{{ audit_dir_path }}/run_audit.sh"
+      state: present
+      regexp: '^AUDIT_CONTENT_LOCATION='
+      line: 'AUDIT_CONTENT_LOCATION={{ audit_dir_path }}'
+
+  - name: Update Audit content version path
+    lineinfile:
+      path: "{{ audit_dir_path }}/run_audit.sh"
+      state: present
+      regexp: '^audit_content_dir='
+      line: 'audit_content_dir=$AUDIT_CONTENT_LOCATION'
+
+  - name: Run audit.sh to run CIS audit
+    shell:
+      cmd: "./run_audit.sh -o {{ cis_audit_file }}"
+    args:
+      chdir: "{{ audit_dir_path }}"
+
+  - name: Copy tools json/csv output files at centralized location
+    fetch:
+        src: "{{ audit_dir_path }}/{{ cis_audit_file }}"
+        dest: "{{ cis_audit_dir }}/"
+        flat: true

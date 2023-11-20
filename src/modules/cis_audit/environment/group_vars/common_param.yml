@@ -1,0 +1,3 @@
+goss_ver: v0.3.16
+cis_audit_dir: CIS_Audit
+devsecops_tool_parser_path: "../devsecops_tool_parser/"

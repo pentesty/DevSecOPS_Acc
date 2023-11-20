@@ -1,0 +1,35 @@
+---
+
+# Run CIS audit tool based on OS version and get json output
+- hosts: all
+  gather_facts: true
+  become: yes
+
+  tasks:
+  - name: Import variables
+    include_vars:
+       file: "{{ item }}"
+    with_items:
+      - environment/group_vars/common_param.yml
+      - environment/group_vars/debian_family_param.yml
+
+  - name: OS Distribution
+    set_fact: os="{{ ansible_distribution }}"
+
+  - name: OS Distribution major version
+    set_fact: os_major_version="{{ ansible_distribution_major_version }}"
+
+  - name: Add prerequisites and Run CIS audit tool for ubuntu os
+    import_tasks: ubuntu_cis_audit.yml
+    when: >
+      os | lower == 'ubuntu'
+
+  # This will run parser tool and generate transformed json at output_files location
+  - name: Run devsecops parser tool on system
+    shell:
+      cmd: "python3 run_parser.py -t {{ item.split('_').4 }}-CIS-Audit -p {{ item }}"
+      chdir: "{{ devsecops_tool_parser_path }}"
+      executable: /bin/bash
+    delegate_to: localhost
+    with_fileglob:
+      - "{{ playbook_dir }}/{{ cis_audit_dir }}/*"

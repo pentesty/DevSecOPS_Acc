@@ -1,0 +1,6 @@
+{
+  "log_filename" : "log_devsecops_tool.log",
+  "csv_headers" : ["date","cwe", "test", "severity", "title", "remediation", "description", "system_name"],
+  "cwe_url" : "https://cwe.mitre.org/data/definitions/",
+  "log_level" : "info"
+}

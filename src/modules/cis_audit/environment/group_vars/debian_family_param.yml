@@ -1,0 +1,3 @@
+audit_dir_path: /opt/{{ cis_audit_dir }}/
+ubuntu18_git_repo: https://github.com/ansible-lockdown/UBUNTU18-CIS-Audit.git
+ubuntu20_git_repo: https://github.com/ansible-lockdown/UBUNTU20-CIS-Audit.git
