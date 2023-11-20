@@ -36,7 +36,7 @@ pipeline {
     stage ('Static analysis - SonarQube') {
       steps {
         withSonarQubeEnv('sonar') {
-          sh 'mvn sonar:sonar'
+          sh 'mvn sonar:sonar -Dsonar.host.url="http://65.0.92.62:9000" -Dsonar.login="227dcd6f24f73880d45cd68f2100ea2bf405c191"'
 	  //sh 'sudo python3 sonarqube.py'
 	  sh './sonarqube_report.sh'
         }
