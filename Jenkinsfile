@@ -90,7 +90,7 @@ pipeline {
        steps {
             sh 'echo "CIS Host vulnerability assessment"'
             sh 'cd src && ansible-playbook -i modules/cis_audit/environment/hosts modules/cis_audit/run_cis_tool.yml --verbose'
-            sh 'echo pwd'
+            sh 'pwd'
            }
    }
 
