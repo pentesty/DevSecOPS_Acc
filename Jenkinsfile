@@ -91,6 +91,7 @@ pipeline {
             sh 'echo "CIS Host vulnerability assessment"'
             sh 'cd src && ansible-playbook -i modules/cis_audit/environment/hosts modules/cis_audit/run_cis_tool.yml --verbose'
             sh 'pwd'
+            sh 'cd src/modules/devsecops_tool_parser/ && python3 run_parser.py -t "CIS-Audit" -p "../cis_audit/CIS_Audit/CIS_10.0.0.82_Ubuntu18_cis_audit.json" -o "consolidated_test_output.csv"'
            }
    }
 
