@@ -1,2 +1,2 @@
 [ubuntu_hosts]
-ubuntu18_1 ansible_host=192.168.5.131 ansible_connection=ssh ansible_ssh_user=ubuntu ansible_sudo_pass=Password123
+ubuntu18_1 ansible_host=3.110.132.150 ansible_connection=ssh ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/Selinux.pem
