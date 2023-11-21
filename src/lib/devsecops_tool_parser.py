@@ -57,8 +57,13 @@ def write_to_csv(dict_data, cmd_args, input_json):
     try:
         # Create folder output_files if not already present and get log filename having system name in prefix
         file_path = get_output_filename(cmd_args.output)
+        json_file_name = os.path.split(cmd_args.path)[1]
+        # Get the ip and system details from json file
+        sys_details = json_file_name.split("_")
+        system_name = sys_details[2] + "_" + sys_details[1]
+        logger.info(f"system name details in format os name and IP : {system_name}")
         for each in dict_data:
-            each['system_name'] = platform.node()
+            each['system_name'] = system_name
         logger.info(dict_data)
         with open(file_path, 'a+', newline='') as csvfile:
             headers = check_header(file_path)
