@@ -14,6 +14,7 @@ from modules.devsecops_tool_parser.test_tools.truffle_hog3 import TruffleHog3
 from modules.devsecops_tool_parser.test_tools.zap_scan import ZapScan
 from modules.devsecops_tool_parser.test_tools.dependency_check import DependencyCheck
 from modules.devsecops_tool_parser.test_tools.cis_audit import CISAudit
+from modules.devsecops_tool_parser.test_tools.aws_cis_audit import AWSCISAudit
 
 
 def run_parser(command_args):
@@ -33,9 +34,12 @@ def run_parser(command_args):
             parser_scan_output = DependencyCheck(command_args)
         elif "cis-audit" in parser_class.lower():
             parser_scan_output = CISAudit(command_args)
+        elif parser_class.lower() == "awscisaudit":
+            parser_scan_output = AWSCISAudit(command_args)
         else:
             logging.fatal("No tool specified. Please provide correct arguments.")
             raise Exception("No tool specified. Please provide correct arguments.")
+
         # get data from test tool parser and convert to csv
         get_dict_data = parser_scan_output.get_data()
         logging.info("run_parser completed successfully.")
@@ -87,4 +91,5 @@ if __name__ == "__main__":
         write_to_csv(get_dict_data_from_parser, cmd_args, input_json)
     else:
         write_to_json(get_dict_data_from_parser, cmd_args)
+
     logging.info("===========================================")

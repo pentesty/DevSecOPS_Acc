@@ -95,12 +95,15 @@ pipeline {
            }
    }
 
-  // stage ('Security monitoring and misconfigurations') {
-  //      steps {
-	 //		sh 'echo "AWS misconfiguration"'
-   //          sh './securityhub.sh'
-   //         }
-   // }
+  stage ('Cloud Security monitoring and misconfigurations') {
+       steps {
+	 		sh 'echo "AWS misconfiguration"'
+	 		sh 'docker run -v `pwd`/aws:/root/.aws -v `pwd`/reports:/app/reports securityftw/cs-suite -env aws'
+	 		sh 'pwd'
+	 		sh 'ls -la'
+            //sh './securityhub.sh'
+           }
+   }
 	  
 	
    stage ('Incidents report') {
