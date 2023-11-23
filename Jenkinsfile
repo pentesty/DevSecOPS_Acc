@@ -98,7 +98,7 @@ pipeline {
   stage ('Cloud Security monitoring and misconfigurations') {
        steps {
 	 		sh 'echo "AWS misconfiguration"'
-	 		sh 'docker run -it --cpus="1.5" --memory="1.5g" --memory-swap="2.5g" -v `pwd`/aws:/root/.aws -v `pwd`/reports:/app/reports securityftw/cs-suite -env aws'
+	 		sh 'docker run --cpus="1.5" --memory="1.5g" --memory-swap="2.5g" -v `pwd`/aws:/root/.aws -v `pwd`/reports:/app/reports securityftw/cs-suite -env aws'
 	 		sh 'pwd'
 	 		sh 'ls -la'
             //sh './securityhub.sh'
