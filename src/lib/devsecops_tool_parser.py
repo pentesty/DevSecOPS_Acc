@@ -59,7 +59,7 @@ def write_to_csv(dict_data, cmd_args, input_json):
         file_path = get_output_filename(cmd_args.output)
         system_name = platform.node()
 
-        if "cis" in cmd_args.test_name.lower():
+        if "cis" in cmd_args.test_name.lower() and cmd_args.test_name.lower() != 'awscisaudit':
             json_file_name = os.path.split(cmd_args.path)[1]
 
             # Get the ip and system details from json file

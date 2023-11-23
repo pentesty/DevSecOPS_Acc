@@ -101,6 +101,7 @@ pipeline {
 	 		sh 'docker run --cpus="1.5" --memory="1.5g" --memory-swap="2.5g" -v `pwd`/aws:/root/.aws -v `pwd`/reports:/app/reports securityftw/cs-suite -env aws'
 	 		sh 'pwd'
 	 		sh 'ls -la'
+	 		sh 'cd src/modules/devsecops_tool_parser/ && python3 run_parser.py -t "awscisaudit" -p "../../../reports/AWS/aws_audit/390618173518/20231123-120259/final_report/final_json" -o "consolidated_test_output.csv"'
             //sh './securityhub.sh'
            }
    }
