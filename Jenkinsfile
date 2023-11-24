@@ -42,19 +42,13 @@ pipeline {
       }
     }
     
-    stage ('Generate build') {
+    stage ('Deploy Application') {
       steps {
         sh 'mvn clean install -DskipTests'
-      }
-    }  
-	  
-    stage ('Deploy to server') {
-            steps {
-           sshagent(['application_server']) {
+        sshagent(['application_server']) {
                 sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/DemoProject/webgoat-server/target/webgoat-server-v8.2.0-SNAPSHOT.jar ubuntu@3.110.132.150:/WebGoat'
 		        sh 'ssh -o  StrictHostKeyChecking=no ubuntu@3.110.132.150 "sudo nohup java -Dfile.encoding=UTF-8 -Dserver.port=8080 -Dserver.address=0.0.0.0 -Dhsqldb.port=9001 -jar webgoat-server-v8.2.0-SNAPSHOT.jar &"'
-              }      
-           }     
+      }
     }
    
     stage ('Dynamic Code Analysis') {
@@ -79,7 +73,7 @@ pipeline {
        steps {
                 sh 'echo "AWS misconfiguration"'
                 sh 'docker run --cpus="1.5" --memory="1.5g" --memory-swap="2.5g" -v `pwd`/aws:/root/.aws -v `pwd`/reports:/app/reports securityftw/cs-suite -env aws'
-                sh 'cd src/modules/devsecops_tool_parser/ && python3 run_parser.py -t "awscisaudit" -p "../../../reports/AWS/aws_audit/390618173518/20231123-120259/final_report/final_json" -o "consolidated_test_output.csv"'
+                sh 'cd src/modules/devsecops_tool_parser/ && python3 run_parser.py -t "awscisaudit" -p "../../../reports/AWS/aws_audit/390618173518/20231124-151320/final_report/final_json" -o "consolidated_test_output.csv"'
            }
    }
 	  
