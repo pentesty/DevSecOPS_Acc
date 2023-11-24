@@ -50,6 +50,7 @@ pipeline {
 		        sh 'ssh -o  StrictHostKeyChecking=no ubuntu@3.110.132.150 "sudo nohup java -Dfile.encoding=UTF-8 -Dserver.port=8080 -Dserver.address=0.0.0.0 -Dhsqldb.port=9001 -jar webgoat-server-v8.2.0-SNAPSHOT.jar &"'
       }
     }
+    }
    
     stage ('Dynamic Code Analysis') {
             steps {
