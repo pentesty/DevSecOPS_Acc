@@ -33,7 +33,7 @@ class CISAudit:
             today = date.today()
             logger.debug(f"Today's date is: {today}")
 
-            cwe_id = "NA"
+            cwe_id = "Unknown"
             title = json_data["title"]
             logger.debug(json_data["expected"])
 
@@ -47,7 +47,7 @@ class CISAudit:
 
             description = json_data["summary-line"]
 
-            severity = "NA"
+            severity = "Unknown"
 
             dict_data = dict()
             dict_data["date"] = str(today)
